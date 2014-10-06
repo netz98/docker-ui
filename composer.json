@@ -2,7 +2,9 @@
   "name": "n98/docker-ui",
   "description": "Start/Stop Docker containers",
   "minimum-stability": "dev",
-  "license": "proprietary",
+  "homepage": "https://github.com/netz98/docker-ui",
+  "license": "MIT",
+  "keywords": ["Docker", "UI", "Container"],
   "authors": [
     {
       "name": "Christian Münch",
@@ -10,6 +12,7 @@
     }
   ],
   "require": {
+    "php": ">=5.4.0",
     "stage1/docker-php": "dev-master",
     "silex/silex": "2.0.x-dev",
     "twig/twig": ">=1.8,<2.0-dev"
