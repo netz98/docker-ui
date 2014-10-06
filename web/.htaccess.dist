@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /~cmuench/PHP/n98/intern/docker-ui/web/
+RewriteBase /
 
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
