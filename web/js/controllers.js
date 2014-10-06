@@ -6,11 +6,27 @@ dockerUIApp.controller('ContainerListCtrl', function ($scope, $http) {
         $scope.containers = data;
     });
 
-    $scope.startContainer = function() {
-        alert('start');
+    $scope.startContainer = function(containerId) {
+        console.log('start: ' + containerId);
+
+        var data = $.param({
+            containerId: containerId
+        });
+
+        $http.post(baseUrl + 'start', data).success(function(data, success) {
+            console.log(data);
+        });
     }
 
-    $scope.stopContainer = function() {
-        alert('stop');
+    $scope.stopContainer = function(containerId) {
+        console.log('stop: ' + containerId);
+
+        var data = $.param({
+            containerId: containerId
+        });
+
+        $http.post(baseUrl + 'stop', data).success(function(data, success) {
+            console.log(data);
+        });
     }
 });

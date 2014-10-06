@@ -20,9 +20,9 @@
                     </ul>
                 </td>
                 <td>{{ '{{ container.state }}' }}</td>
-                <td>
-                    <button ng-click="" ng-if="container.state == 'running'" rel="{{ '{{ container.id }}' }}" type="button" class="btn btn-default glyphicon glyphicon-stop" title="Stop container"></button>
-                    <button ng-if="container.state != 'running'" rel="{{ '{{ container.id }}' }}" type="button" class="btn btn-default glyphicon glyphicon-play" title="Start container"></button>
+                <td ng-switch on="container.state">
+                    <button ng-click="stopContainer(container.id)" ng-switch-when="running" rel="{{ '{{ container.id }}' }}" type="button" class="btn btn-default glyphicon glyphicon-stop" title="Stop container"></button>
+                    <button ng-click="startContainer(container.id)" ng-switch-when="stopped" rel="{{ '{{ container.id }}' }}" type="button" class="btn btn-default glyphicon glyphicon-play" title="Start container"></button>
                 </td>
             </tr>
     </table>

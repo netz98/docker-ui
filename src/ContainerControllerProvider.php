@@ -57,14 +57,36 @@ class ContainerControllerProvider implements ControllerProviderInterface
             return new JsonResponse($containers);
         });
 
-        $controllers->post('/toggle', function(Request $request) use ($app) {
+        $controllers->post('/start', function(Request $request) use ($app) {
             try {
                 $manager   = $app['docker']->getContainerManager();
-                $container = $manager->find($request->get('id'));
+                $container = $manager->find($request->get('containerId'));
                 $runtimeData = $container->getRuntimeInformations();
                 if ($runtimeData['State']['Running']) {
                     $app['docker']->getContainerManager()->stop($container);
-                } else {
+                }
+
+                $status = true;
+            } catch (Exception $e) {
+                $status = false;
+                $message = $e->getMessage();
+            }
+
+            return new JsonResponse(
+                array(
+                    'success'   => $status,
+                    'container' => $container->getId(),
+                    'message'   => $status ? 'OK' : $message
+                )
+            );
+        })->bind('start');
+
+        $controllers->post('/stop', function(Request $request) use ($app) {
+            try {
+                $manager   = $app['docker']->getContainerManager();
+                $container = $manager->find($request->get('containerId'));
+                $runtimeData = $container->getRuntimeInformations();
+                if (!$runtimeData['State']['Running']) {
                     $app['docker']->getContainerManager()->start($container);
                 }
 
@@ -81,7 +103,7 @@ class ContainerControllerProvider implements ControllerProviderInterface
                     'message'   => $status ? 'OK' : $message
                 )
             );
-        })->bind('toggle');
+        })->bind('stop');
 
         return $controllers;
     }
