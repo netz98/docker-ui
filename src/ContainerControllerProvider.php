@@ -34,6 +34,27 @@ class ContainerControllerProvider implements ControllerProviderInterface
             }
 
             return $app['twig']->render('index.html.twig', array('containers' => $containers));
+        })->bind('home');
+
+        $controllers->get('/list', function() use ($app) {
+
+            $manager = $app['docker']->getContainerManager();
+
+            $containers = array();
+            foreach ($manager->findAll(array('all' => 1)) as $container) {
+                /* @var $container \Docker\Container */
+                $manager->inspect($container);
+                $runtimeInformations = $container->getRuntimeInformations();
+
+                $containers[] = array(
+                    'id'           => $container->getId(),
+                    'name'         => $container->getName(),
+                    'portBindings' => $runtimeInformations['HostConfig']['PortBindings'],
+                    'state'        => $runtimeInformations['State']['Running'] ? 'running' : 'stopped',
+                );
+            }
+
+            return new JsonResponse($containers);
         });
 
         $controllers->post('/toggle', function(Request $request) use ($app) {

@@ -2,7 +2,7 @@
 {% import "_format.html.twig" as format %}
 
 {% block content %}
-
+<div>
     <table id="container_list" class="table table-hover table-bordered">
             <tr>
                 <th>Name</th>
@@ -10,52 +10,21 @@
                 <th style="text-align:center">Status</th>
                 <th></th>
             </tr>
-        {% for container in containers %}
-            <tr>
-                <td>{{ container.name }}</td>
+            <tr ng-repeat="container in containers">
+                <td>{{ '{{ container.name }}' }}</td>
                 <td>
-                {% for portBindingContainer, portBindingHost in container.runtimeInformations.HostConfig.PortBindings %}
-                    {{ portBindingContainer }} => {{ portBindingHost.0.HostPort }}
-                {% else %}
-                {% endfor %}
+                    <ul>
+                       <li ng-repeat="(portBindingName, portBindingData) in container.portBindings">
+                           {{ '{{ portBindingName }}' }} => {{ '{{ portBindingData.0.HostIp }}' }}:{{ '{{ portBindingData.0.HostPort }}' }}
+                       </li>
+                    </ul>
                 </td>
-                <td style="text-align:center">{{ format.status(container) }}</td>
-                <td style="text-align:center">{{ format.statusButton(container) }}</td>
-            </tr>
-        {% else %}
-            <tr>
+                <td>{{ '{{ container.state }}' }}</td>
                 <td>
-                    <strong>No containers found</strong>
+                    <button ng-click="" ng-if="container.state == 'running'" rel="{{ '{{ container.id }}' }}" type="button" class="btn btn-default glyphicon glyphicon-stop" title="Stop container"></button>
+                    <button ng-if="container.state != 'running'" rel="{{ '{{ container.id }}' }}" type="button" class="btn btn-default glyphicon glyphicon-play" title="Start container"></button>
                 </td>
             </tr>
-        {% endfor %}
     </table>
-
-{% endblock %}
-
-{% block body_end %}
-
-    <script type="text/javascript">
-        jQuery(document).ready(function() {
-
-            var onClick = function() {
-                jQuery.post(
-                    '{{ app.url_generator.generate('toggle') }}',
-                    { id: jQuery(this).attr('rel') },
-                    function(data) {
-                        if (data.success) {
-                            // jQuery(this).attr('rel');
-                            window.location.reload();
-                        }
-                    },
-                    'json'
-                )
-            };
-
-            jQuery('#container_list button').bind('click', onClick);
-
-
-        });
-    </script>
-
+</div>
 {% endblock %}

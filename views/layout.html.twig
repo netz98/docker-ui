@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="dockerUIApp" ng-controller="ContainerListCtrl">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -61,8 +61,15 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
+
+<script type="text/javascript">
+var baseUrl = '{{ app.url_generator.generate('home') }}';
+</script>
+
 <script src="components/jquery/dist/jquery.min.js"></script>
 <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="components/angularjs/angular.min.js"></script>
+<script src="js/controllers.js"></script>
 
 {% block body_end %}
 {% endblock %}
