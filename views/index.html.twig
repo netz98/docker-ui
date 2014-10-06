@@ -1,0 +1,61 @@
+{% extends 'layout.html.twig' %}
+{% import "_format.html.twig" as format %}
+
+{% block content %}
+
+    <table id="container_list" class="table table-hover table-bordered">
+            <tr>
+                <th>Name</th>
+                <th>Port-Binding (Container => Host)</th>
+                <th style="text-align:center">Status</th>
+                <th></th>
+            </tr>
+        {% for container in containers %}
+            <tr>
+                <td>{{ container.name }}</td>
+                <td>
+                {% for portBindingContainer, portBindingHost in container.runtimeInformations.HostConfig.PortBindings %}
+                    {{ portBindingContainer }} => {{ portBindingHost.0.HostPort }}
+                {% else %}
+                {% endfor %}
+                </td>
+                <td style="text-align:center">{{ format.status(container) }}</td>
+                <td style="text-align:center">{{ format.statusButton(container) }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td>
+                    <strong>No containers found</strong>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block body_end %}
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+
+            var onClick = function() {
+                jQuery.post(
+                    '{{ app.url_generator.generate('toggle') }}',
+                    { id: jQuery(this).attr('rel') },
+                    function(data) {
+                        if (data.success) {
+                            // jQuery(this).attr('rel');
+                            window.location.reload();
+                        }
+                    },
+                    'json'
+                )
+            };
+
+            jQuery('#container_list button').bind('click', onClick);
+
+
+        });
+    </script>
+
+{% endblock %}

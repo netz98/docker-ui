@@ -1,0 +1,22 @@
+{
+  "name": "n98/docker-ui",
+  "description": "Start/Stop Docker containers",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Christian Münch",
+      "email": "c.muench@netz98.de"
+    }
+  ],
+  "require": {
+    "stage1/docker-php": "dev-master",
+    "silex/silex": "2.0.x-dev",
+    "twig/twig": ">=1.8,<2.0-dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "N98\\Docker\\UI\\": "src"
+    }
+  }
+}

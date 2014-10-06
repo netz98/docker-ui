@@ -1,0 +1,15 @@
+{% macro status(container) %}
+    {%  if container.runtimeInformations.State.Running %}
+        <span class="label label-success">Running</span>
+    {% else %}
+        <span class="label label-default">Stopped</span>
+    {% endif %}
+{% endmacro %}
+
+{% macro statusButton(container) %}
+    {%  if container.runtimeInformations.State.Running %}
+        <button rel="{{ container.id }}" type="button" class="btn btn-default glyphicon glyphicon-stop" title="Stop container"></button>
+    {% else %}
+        <button rel="{{ container.id }}" type="button" class="btn btn-default glyphicon glyphicon-play" title="Start container"></button>
+    {% endif %}
+{% endmacro %}

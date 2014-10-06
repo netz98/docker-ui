@@ -1,0 +1,18 @@
+.idea
+
+/vendor/
+build
+
+# OS generated files #
+.DS_Store
+.DS_Store?
+.Trashes
+Thumbs.db
+
+# Webserver
+.htaccess
+
+# Bower #
+#########
+bower_components
+components
