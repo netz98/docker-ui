@@ -4,9 +4,9 @@ namespace N98\Docker\UI;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
+use Silex\ControllerProviderInterface;
 
 class ContainerControllerProvider implements ControllerProviderInterface
 {
@@ -33,8 +33,8 @@ class ContainerControllerProvider implements ControllerProviderInterface
                 $containers[] = $container;
             }
 
-            return $app['twig']->render('index.html.twig', array('containers' => $containers));
-        });
+            return $app['twig']->render('container/list.html.twig', array('containers' => $containers));
+        })->bind('container_list');
 
         $controllers->post('/toggle', function(Request $request) use ($app) {
             try {
@@ -61,6 +61,13 @@ class ContainerControllerProvider implements ControllerProviderInterface
                 )
             );
         })->bind('toggle');
+
+        $controllers->get('/details/{containerId}', function($containerId) use ($app) {
+            $manager   = $app['docker']->getContainerManager();
+            $container = $manager->find($containerId);
+
+            return $app['twig']->render('container/details.html.twig', array('container' => $container));
+        })->bind('container_details');
 
         return $controllers;
     }

@@ -1,24 +1,35 @@
 {% extends 'layout.html.twig' %}
 {% import "_format.html.twig" as format %}
+{% set active_page = "container_list" %}
 
 {% block content %}
 
+<div class="table-responsive">
     <table id="container_list" class="table table-hover table-bordered">
+        <thead>
             <tr>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Port-Binding (Container => Host)</th>
+                <th>Image:Tag</th>
+                <th>Command</th>
                 <th style="text-align:center">Status</th>
                 <th></th>
             </tr>
+        </thead>
+        <tbody>
         {% for container in containers %}
             <tr>
+                <td><a href="{{ url('container_details', {containerId:container.id}) }}">{{ container.id[0:12] }}</a></td>
                 <td>{{ container.name }}</td>
                 <td>
-                {% for portBindingContainer, portBindingHost in container.runtimeInformations.HostConfig.PortBindings %}
-                    {{ portBindingContainer }} => {{ portBindingHost.0.HostPort }}
-                {% else %}
-                {% endfor %}
+                    {% for portBindingContainer, portBindingHost in container.runtimeInformations.HostConfig.PortBindings %}
+                        {{ portBindingContainer }} => {{ portBindingHost.0.HostPort }}
+                    {% else %}
+                    {% endfor %}
                 </td>
+                <td>{{ container.config.Image }}</td>
+                <td>{{ container.config.Cmd.0 }}</td>
                 <td style="text-align:center">{{ format.status(container) }}</td>
                 <td style="text-align:center">{{ format.statusButton(container) }}</td>
             </tr>
@@ -29,7 +40,9 @@
                 </td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
+</div>
 
 {% endblock %}
 

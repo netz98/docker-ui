@@ -1,0 +1,33 @@
+{% extends 'layout.html.twig' %}
+{% set active_page = "image_list" %}
+
+{% block content %}
+
+    <div class="table-responsive">
+        <table id="image_list" class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>Repository</th>
+                <th>Tag</th>
+                <th>ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for image in images %}
+                <tr>
+                    <td>{{ image.repository }}</td>
+                    <td>{{ image.tag }}</td>
+                    <td>{{ image.id }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>
+                        <strong>No images found</strong>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -14,7 +14,8 @@
   "require": {
     "php": ">=5.4.0",
     "stage1/docker-php": "dev-master",
-    "silex/silex": "2.0.x-dev",
+    "symfony/twig-bridge": "v2.3.4",
+    "silex/silex": "1.1.*",
     "twig/twig": ">=1.8,<2.0-dev"
   },
   "autoload": {
