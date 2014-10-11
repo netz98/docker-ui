@@ -53,6 +53,7 @@ WORKDIR /var/www
 RUN curl -sS https://getcomposer.org/installer | php
 RUN php composer.phar install -vvv
 RUN bower install --allow-root -V
+RUN chown www-data.users -R /var/www
 
 EXPOSE 8090
 
