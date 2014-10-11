@@ -34,6 +34,10 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php5/fpm/php-fpm.conf
 RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php5/fpm/php.ini
 
+# because the docker.sock file has the default perm 660 and root:users owner
+RUN sed -i "s/group = www-data/group = users/" /etc/php5/fpm/pool.d/www.conf
+RUN sed -i "s/listen.group = www-data/listen.group = users/" /etc/php5/fpm/pool.d/www.conf
+
 RUN mkdir               /var/www
 ADD srvconfig/default   /etc/nginx/sites-available/default
 RUN mkdir               /etc/service/nginx
