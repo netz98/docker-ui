@@ -24,7 +24,9 @@
                 <td>{{ container.name }}</td>
                 <td>
                     {% for portBindingContainer, portBindingHost in container.runtimeInformations.HostConfig.PortBindings %}
-                        {{ portBindingContainer }} => {{ portBindingHost.0.HostPort }}
+                        {% if portBindingHost.0 is defined %}
+                            {{ portBindingContainer }} => {{ portBindingHost.0.HostPort }}
+                        {% endif %}
                     {% else %}
                     {% endfor %}
                 </td>
