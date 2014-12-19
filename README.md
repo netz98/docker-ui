@@ -13,6 +13,13 @@ and offers a button to start/stop it.
 
     bower install
     composer.phar install
+
+## Container Groups
+
+All containers are grouped by name.
+The delimiters to group containers are the "_" or "-" character which can be found in the
+container name.
+
+## VHost
     
 Add vhost to "web" folder. A sample readme for Apache with enabled mod_rewrite is available.    
-
