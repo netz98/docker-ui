@@ -18,23 +18,33 @@
             </tr>
         </thead>
         <tbody>
-        {% for container in containers %}
-            <tr>
-                <td><a href="{{ url('container_details', {containerId:container.id}) }}">{{ container.id[0:12] }}</a></td>
-                <td>{{ container.name }}</td>
-                <td>
-                    {% for portBindingContainer, portBindingHost in container.runtimeInformations.HostConfig.PortBindings %}
-                        {% if portBindingHost.0 is defined %}
-                            {{ portBindingContainer }} => {{ portBindingHost.0.HostPort }}
-                        {% endif %}
-                    {% else %}
-                    {% endfor %}
-                </td>
-                <td>{{ container.config.Image }}</td>
-                <td>{{ container.config.Cmd.0 }}</td>
-                <td style="text-align:center">{{ format.status(container) }}</td>
-                <td style="text-align:center">{{ format.statusButton(container) }}</td>
-            </tr>
+        {% for containerGroup, containers in containerGroups %}
+                {% if containers|length > 1 %}
+                <tr class="info">
+                    <td colspan="7">
+                        <span class="glyphicon glyphicon-folder-open"></span>
+                        <span>{{ containerGroup }}</span>
+                    </td>
+                </tr>
+                {% endif %}
+            {% for container in containers %}
+                <tr>
+                    <td><a href="{{ url('container_details', {containerId:container.id}) }}">{{ container.id[0:12] }}</a></td>
+                    <td>{{ container.name|trim('/') }}</td>
+                    <td>
+                        {% for portBindingContainer, portBindingHost in container.runtimeInformations.HostConfig.PortBindings %}
+                            {% if portBindingHost.0 is defined %}
+                                {{ portBindingContainer }} => {{ portBindingHost.0.HostPort }}
+                            {% endif %}
+                        {% else %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ container.config.Image }}</td>
+                    <td>{{ container.config.Cmd.0 }}</td>
+                    <td style="text-align:center">{{ format.status(container) }}</td>
+                    <td style="text-align:center">{{ format.statusButton(container) }}</td>
+                </tr>
+            {% endfor %}
         {% else %}
             <tr>
                 <td>
