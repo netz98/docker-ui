@@ -1,6 +1,6 @@
 <?php
 
-namespace N98\Docker\UI;
+namespace N98\Docker\UI\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +22,9 @@ class ContainerControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
+        /**
+         * List
+         */
         $controllers->get('/', function () use ($app) {
             $manager = $app['docker']->getContainerManager();
 
@@ -36,6 +39,9 @@ class ContainerControllerProvider implements ControllerProviderInterface
             return $app['twig']->render('container/list.html.twig', array('containers' => $containers));
         })->bind('container_list');
 
+        /**
+         * Toggle
+         */
         $controllers->post('/toggle', function(Request $request) use ($app) {
             try {
                 $manager   = $app['docker']->getContainerManager();
@@ -62,6 +68,9 @@ class ContainerControllerProvider implements ControllerProviderInterface
             );
         })->bind('toggle');
 
+        /**
+         * Details
+         */
         $controllers->get('/details/{containerId}', function($containerId) use ($app) {
             $manager   = $app['docker']->getContainerManager();
             $container = $manager->find($containerId);

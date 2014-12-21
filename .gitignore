@@ -13,6 +13,8 @@ Thumbs.db
 .htaccess
 
 # Bower #
-#########
 bower_components
 components
+
+# docker-ui
+config.yaml

@@ -3,8 +3,10 @@
 namespace N98\Docker\UI;
 
 use N98\Docker\UI\Provider\DockerServiceProvider;
+use N98\Docker\UI\Provider\FigServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use DerAlex\Silex\YamlConfigServiceProvider;
 
 class WebApplication extends \Silex\Application
 {
@@ -24,7 +26,22 @@ class WebApplication extends \Silex\Application
      */
     protected function init()
     {
-        $this['debug'] = true;
+        $configDist = __DIR__ . '/../config.dist.yaml';
+        $configUser = __DIR__ . '/../config.yaml';
+        if (file_exists($configUser)) {
+            $this->register(new YamlConfigServiceProvider($configUser));
+        } else {
+            $this->register(new YamlConfigServiceProvider($configDist));
+        }
+
+        $this['debug'] = $this['config']['debug'];
+
+        /**
+         * Fig
+         */
+        if ($this['config']['fig']['enabled']) {
+            $this->register(new FigServiceProvider());
+        }
 
         /**
          * Docker
@@ -50,8 +67,12 @@ class WebApplication extends \Silex\Application
             return $this->redirect($this['url_generator']->generate('container_list'));
         })->bind('home');
 
-        $this->mount('/container', new ContainerControllerProvider());
-        $this->mount('/image', new ImageControllerProvider());
+        $this->mount('/container', new Controller\ContainerControllerProvider());
+        $this->mount('/image', new Controller\ImageControllerProvider());
+
+        if ($this['config']['fig']['enabled']) {
+            $this->mount('/fig', new Controller\FigControllerProvider());
+        }
 
     }
 }

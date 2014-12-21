@@ -1,0 +1,11 @@
+debug: false
+
+fig:
+  enabled: false
+  bin: /usr/bin/fig
+
+  # containing fig.yml file
+  folders:
+    # unique-name: path
+
+

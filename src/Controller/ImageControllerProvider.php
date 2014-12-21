@@ -1,6 +1,6 @@
 <?php
 
-namespace N98\Docker\UI;
+namespace N98\Docker\UI\Controller;
 
 use Docker\Manager\ImageManager;
 use Silex\ControllerProviderInterface;
@@ -21,9 +21,10 @@ class ImageControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
+        /**
+         * List
+         */
         $controllers->get('/', function () use ($app) {
-            $images = array();
-
             $manager = $app['docker']->getImageManager(); /* @var $manager ImageManager */
             $images = $manager->findAll();
 
