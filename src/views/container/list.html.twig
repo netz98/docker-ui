@@ -11,6 +11,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Port-Binding (Container => Host)</th>
+                <th>Exposed Port</th>
                 <th>Image:Tag</th>
                 <th>Command</th>
                 <th style="text-align:center">Status</th>
@@ -38,6 +39,14 @@
                             {% endif %}
                         {% else %}
                         {% endfor %}
+                    </td>
+                    <td>
+                        {% if container.runtimeInformations.Config.ExposedPorts is defined %}
+                            {% for exposedPort in container.runtimeInformations.Config.ExposedPorts|keys %}
+                                {{ exposedPort }}
+                            {% else %}
+                            {% endfor %}
+                        {% endif %}
                     </td>
                     <td>{{ container.config.Image }}</td>
                     <td>{{ container.config.Cmd.0 }}</td>
