@@ -36,7 +36,40 @@ class ContainerControllerProvider implements ControllerProviderInterface
                 $containers[] = $container;
             }
 
-            return $app['twig']->render('container/list.html.twig', array('containers' => $containers));
+            uasort($containers, function(\Docker\Container $container1, \Docker\Container $container2) {
+                if ($container1->getName() > $container2->getName()) {
+                    return 1;
+                }
+
+                if ($container1->getName() < $container2->getName()) {
+                    return -1;
+                }
+
+                return 0;
+            });
+
+            $containerGroups = array(
+                'default' => array()
+            );
+            foreach ($containers as $container) {
+                $containerGroupParts = preg_split('/[-_]+/', $container->getName());
+                $containerGroup = array_shift($containerGroupParts);
+                $group = trim($containerGroup, '/');
+                if (!isset($containerGroups[$group])) {
+                    $containerGroups[$group] = array();
+                }
+                $containerGroups[$group][] = $container;
+            }
+            foreach ($containerGroups as $containerGroupName => $containerGroup) {
+                if (count($containerGroup) == 1) {
+                    $containerGroups['default'] = array_merge($containerGroup, $containerGroups['default']);
+                    unset($containerGroups[$containerGroupName]);
+                }
+            }
+
+            ksort($containerGroups);
+
+            return $app['twig']->render('container/list.html.twig', array('containerGroups' => $containerGroups));
         })->bind('container_list');
 
         /**

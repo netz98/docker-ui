@@ -13,9 +13,15 @@ and offers a button to start/stop it.
 
     bower install
     composer.phar install
-    
-Add vhost to "web" folder. A sample readme for Apache with enabled mod_rewrite is available.    
 
+## Container Groups
+
+All containers are grouped by name.
+The delimiters to group containers are the "_" or "-" character which can be found in the
+container name.
+
+## VHost
+    
 ## Installation via Docker
 
 Requires preinstalled and working Docker and depending on your OS: boot2docker.
@@ -29,4 +35,3 @@ After the successful build run:
 If you have boot2docker installed get the IP address of the VM and then point your browser to:
 
 	http://<ip>:8090
-	
