@@ -13,3 +13,14 @@
         <button rel="{{ container.id }}" type="button" class="btn btn-default glyphicon glyphicon-play" title="Start container"></button>
     {% endif %}
 {% endmacro %}
+
+{% macro containerName(name, config) %}
+    {% if config.icons.enabled %}
+        {% for regex,icon in config.icons.container_regex %}
+            {% if name matches regex %}
+                <i class="glyphicon glyphicon-{{ icon }}"></i>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {{ name|trim('/') }}
+{% endmacro %}

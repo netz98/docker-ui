@@ -31,7 +31,7 @@
             {% for container in containers %}
                 <tr>
                     <td><a href="{{ url('container_details', {containerId:container.id}) }}">{{ container.id[0:12] }}</a></td>
-                    <td>{{ container.name|trim('/') }}</td>
+                    <td>{{ format.containerName(container.name, config) }}</td>
                     <td>
                         {% for portBindingContainer, portBindingHost in container.runtimeInformations.HostConfig.PortBindings %}
                             {% if portBindingHost.0 is defined %}

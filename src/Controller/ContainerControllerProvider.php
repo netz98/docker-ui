@@ -69,7 +69,10 @@ class ContainerControllerProvider implements ControllerProviderInterface
 
             ksort($containerGroups);
 
-            return $app['twig']->render('container/list.html.twig', array('containerGroups' => $containerGroups));
+            return $app['twig']->render(
+                'container/list.html.twig',
+                array('containerGroups' => $containerGroups, 'config' => $app['config'])
+            );
         })->bind('container_list');
 
         /**

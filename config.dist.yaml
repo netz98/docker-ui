@@ -9,3 +9,11 @@ fig:
     # unique-name: path
 
 
+icons:
+  enabled: true
+
+  # for a list see http://getbootstrap.com/components/#glyphicons
+  container_regex:
+     '/mysql/': "hdd"
+     '/magento/': "shopping-cart"
+     '/test/': "flag"
